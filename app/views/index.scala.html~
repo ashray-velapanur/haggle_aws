@@ -1,0 +1,6 @@
+@(message: String)
+
+@main("Welcome to Haggle") {
+
+    @play20.welcome(message)
+}
