@@ -1,4 +1,4 @@
-@(helloForm: Form[(String,Int,Option[String])])
+@(helloForm: Form[(String)])
 
 @import helper._
 
@@ -8,29 +8,15 @@
 
     @form(action = routes.Application.sayHello, args = 'id -> "helloform") {
 
-        @inputText(
-        field = helloForm("name"),
-        args = '_label -> "What's your name?", 'placeholder -> "World"
-        )
-
-        @inputText(
-        field = helloForm("repeat"),
-        args = '_label -> "How many times?", 'size -> 3, 'placeholder -> 10
-        )
-
-        @select(
-        field = helloForm("color"),
-        options = options(
-        "" -> "Default",
-        "red" -> "Red",
-        "green" -> "Green",
-        "blue" -> "Blue"
-        ),
-        args = '_label -> "Choose a color"
+        @textarea(
+        field = helloForm("text"),
+        args = '_label -> "Enter some text: ",
+        'placeholder -> "I cannot say enough about the amazing lobster risotto.",
+        'style -> "height:300px;width:400px"
         )
 
         <p class="buttons">
-        <input type="submit" id="submit">
+        <input type="submit" id="submit" value="Analyse">
         <p>
     }
 }
