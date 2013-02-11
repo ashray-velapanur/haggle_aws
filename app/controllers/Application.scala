@@ -16,7 +16,7 @@ object Application extends Controller {
     Ok(views.html.index(helloForm))
   }
 
-  def sayHello = Action { implicit request =>
+  def sentiment = Action { implicit request =>
     helloForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.index(formWithErrors)),
       {case text => Ok(analyse(text))}

@@ -2,17 +2,17 @@
 
 @import helper._
 
-@main(title = "The 'helloworld' application") {
+@main(title = "Sentiment Analysis") {
 
-    <h1>Configure your 'Hello world':</h1>
+    <h1>Sentiment Analysis</h1>
 
-    @form(action = routes.Application.sayHello, args = 'id -> "helloform") {
+    @form(action = routes.Application.sentiment, args = 'id -> "helloform") {
 
         @textarea(
         field = helloForm("text"),
-        args = '_label -> "Enter some text: ",
-        'placeholder -> "I cannot say enough about the amazing lobster risotto.",
-        'style -> "height:300px;width:400px"
+        args = '_label -> "Enter text for analyis: ",
+        'placeholder -> "Enter the foursquare tip",
+        'style -> "height:100px;width:400px"
         )
 
         <p class="buttons">
