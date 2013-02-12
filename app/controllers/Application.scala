@@ -6,6 +6,11 @@ import play.api.data._
 import play.api.data.Forms._
 import opennlp.tools.tokenize.{TokenizerModel, TokenizerME}
 import opennlp.tools.postag.{POSTaggerME, POSModel}
+import opennlp.tools.doccat.{FeatureGenerator, DocumentSampleStream, DocumentCategorizerME}
+import opennlp.tools.util.PlainTextByLineStream
+import java.util
+import com.google.common.io.Files
+import io.Source
 
 object Application extends Controller {
 
@@ -24,14 +29,29 @@ object Application extends Controller {
     )
   }
 
+  val application = play.Play.application()
+  val lines: Set[String] = Source.fromInputStream(application.resourceAsStream("senti_wn_top_words.txt")).getLines.toSet
+  val tzer = new TokenizerME(new TokenizerModel(application.resourceAsStream("en-token.bin")))
+  val featureGenerator = new FeatureGenerator {
+    def extractFeatures(tokens: Array[String]): util.Collection[String] = {
+      val list = new util.ArrayList[String]()
+      for(token <- tokens){
+         if(lines.contains(token)){
+            list.add(token)
+         }
+      }
+      list
+    }
+  }
+  val doccatModel = DocumentCategorizerME.train("en",
+    new DocumentSampleStream(
+      new PlainTextByLineStream(application.resourceAsStream("yelp_model_sentiment"), "UTF-8")
+    ), 0, 100, featureGenerator)
+  val categorizer = new DocumentCategorizerME(doccatModel, featureGenerator)
 
   def analyse(text:String):String={
-    val application = play.Play.application()
-    val tzer = new TokenizerME(new TokenizerModel(application.resourceAsStream("en-token.bin")))
-    val tokens: Array[String] = tzer.tokenize(text)
-    val posTagger = new POSTaggerME(new POSModel(application.resourceAsStream("en-pos-maxent.bin")))
-    val tags = posTagger.tag(tokens)
-    tokens.mkString(", ") + "<br />" + tags.mkString(", ")
+    val outcomes = categorizer.categorize(tzer.tokenize(text))
+    categorizer.getBestCategory(outcomes)
   }
 
 }
