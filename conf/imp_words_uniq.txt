@@ -4234,8 +4234,8 @@
 0.5	0.0	costly
 0.0	0.75	overpriced
 0.0	0.25	inexpensive
-0.0	0.5	cheap
-0.0	0.5	cheapest
+0.5	0.0	cheap
+0.5	0.0	cheapest
 0.125	0.25	cut-rate
 0.125	0.25	cut-price
 0.125	0.25	bargain-priced
@@ -17933,7 +17933,7 @@
 0.25	0.75	tat
 0.25	0.75	tackiness
 0.25	0.75	sleaze
-0.25	0.75	cheapness
+0.25	0.00	cheapness
 0.125	0.0	readability
 0.5	0.25	intelligibility
 0.25	0.625	expressiveness

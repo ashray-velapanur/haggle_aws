@@ -11,6 +11,9 @@ import opennlp.tools.util.PlainTextByLineStream
 import java.util
 import com.google.common.io.Files
 import io.Source
+import opennlp.tools.parser.{ParserFactory, Parser, ParserModel}
+import java.io.IOException
+import opennlp.tools.cmdline.parser.ParserTool
 
 object Application extends Controller {
 
@@ -43,6 +46,8 @@ object Application extends Controller {
       list
     }
   }
+  val model = new ParserModel(application.resourceAsStream("en-parser-chunking.bin"));
+  val parser = ParserFactory.create(model);
   val doccatModel = DocumentCategorizerME.train("en",
     new DocumentSampleStream(
       new PlainTextByLineStream(application.resourceAsStream("yelp_model_sentiment"), "UTF-8")
@@ -52,6 +57,13 @@ object Application extends Controller {
   def analyse(text:String):String={
     val outcomes = categorizer.categorize(tzer.tokenize(text))
     categorizer.getBestCategory(outcomes)
+    //test(text)
   }
 
+  def parse_input(sentence:String):String={
+    val topParses = ParserTool.parseLine(sentence, parser, 1);
+    val sb = new StringBuffer()
+    topParses(0).show(sb)
+    return sb.toString
+  }
 }
