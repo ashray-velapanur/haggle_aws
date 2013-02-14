@@ -14,6 +14,7 @@ import io.Source
 import opennlp.tools.parser.{ParserFactory, Parser, ParserModel}
 import java.io.IOException
 import opennlp.tools.cmdline.parser.ParserTool
+import nlp.Categorizer
 
 object Application extends Controller {
 
@@ -32,33 +33,15 @@ object Application extends Controller {
     )
   }
 
-  val application = play.Play.application()
-  val lines: Set[String] = Source.fromInputStream(application.resourceAsStream("senti_wn_top_words.txt")).getLines.toSet
-  val tzer = new TokenizerME(new TokenizerModel(application.resourceAsStream("en-token.bin")))
-  val featureGenerator = new FeatureGenerator {
-    def extractFeatures(tokens: Array[String]): util.Collection[String] = {
-      val list = new util.ArrayList[String]()
-      for(token <- tokens){
-         if(lines.contains(token)){
-            list.add(token)
-         }
-      }
-      list
-    }
-  }
-  val model = new ParserModel(application.resourceAsStream("en-parser-chunking.bin"));
-  val parser = ParserFactory.create(model);
-  val doccatModel = DocumentCategorizerME.train("en",
-    new DocumentSampleStream(
-      new PlainTextByLineStream(application.resourceAsStream("yelp_model_sentiment"), "UTF-8")
-    ), 0, 100, featureGenerator)
-  val categorizer = new DocumentCategorizerME(doccatModel, featureGenerator)
-
+  val categorizer = new Categorizer()
   def analyse(text:String):String={
-    val outcomes = categorizer.categorize(tzer.tokenize(text))
+    val outcomes = categorizer.categorize(text)
     categorizer.getBestCategory(outcomes)
     //test(text)
   }
+  val application = play.Play.application()
+  val model = new ParserModel(application.resourceAsStream("en-parser-chunking.bin"));
+  val parser = ParserFactory.create(model);
 
   def parse_input(sentence:String):String={
     val topParses = ParserTool.parseLine(sentence, parser, 1);
