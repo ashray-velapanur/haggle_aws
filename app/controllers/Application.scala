@@ -1,20 +1,12 @@
 package controllers
 
-import play.api._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
-import opennlp.tools.tokenize.{TokenizerModel, TokenizerME}
-import opennlp.tools.postag.{POSTaggerME, POSModel}
-import opennlp.tools.doccat.{FeatureGenerator, DocumentSampleStream, DocumentCategorizerME}
-import opennlp.tools.util.PlainTextByLineStream
-import java.util
-import com.google.common.io.Files
-import io.Source
-import opennlp.tools.parser.{ParserFactory, Parser, ParserModel}
-import java.io.IOException
+import opennlp.tools.parser.{ParserFactory, ParserModel}
 import opennlp.tools.cmdline.parser.ParserTool
 import nlp.Categorizer
+import edu.smu.tspell.wordnet.{NounSynset, SynsetType, WordNetDatabase}
 
 object Application extends Controller {
 
@@ -37,16 +29,27 @@ object Application extends Controller {
   def analyse(text:String):String={
     val outcomes = categorizer.categorize(text)
     categorizer.getBestCategory(outcomes)
-    //test(text)
+    parse_input(text)
   }
   val application = play.Play.application()
-  val model = new ParserModel(application.resourceAsStream("en-parser-chunking.bin"));
-  val parser = ParserFactory.create(model);
+  val model = new ParserModel(application.resourceAsStream("en-parser-chunking.bin"))
+  val parser = ParserFactory.create(model)
 
   def parse_input(sentence:String):String={
-    val topParses = ParserTool.parseLine(sentence, parser, 1);
+    val topParses = ParserTool.parseLine(sentence, parser, 1)
     val sb = new StringBuffer()
     topParses(0).show(sb)
+    System.setProperty("wordnet.database.dir", "/usr/local/WordNet-3.0/dict/")
+    val database = WordNetDatabase.getFileInstance()
+    val synsets = database.getSynsets("fly", SynsetType.NOUN)
+    var out_str = ""
+    for (synset <- synsets) {
+      val nounSynset = synset.asInstanceOf[NounSynset]
+      val hyponyms = nounSynset.getHyponyms()
+      out_str = out_str + (nounSynset.getWordForms()(0) +
+        ": " + nounSynset.getDefinition() + ") has " + hyponyms.length + " hyponyms");
+    }
+    return out_str
     return sb.toString
   }
 }

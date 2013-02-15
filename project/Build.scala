@@ -13,7 +13,8 @@ object ApplicationBuild extends Build {
     // Add your project dependencies here,
     jdbc,
     anorm,
-    "org.apache.opennlp" % "opennlp-tools" % "1.5.2-incubating"
+    "org.apache.opennlp" % "opennlp-tools" % "1.5.2-incubating",
+    "org.jaws" % "jaws" % "1.3"
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
