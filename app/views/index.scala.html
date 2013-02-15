@@ -17,8 +17,19 @@
         )
 
         <p class="buttons">
-        <input type="submit" id="submit" value="Analyse">
+        <input type="button" name="sentiment" value="Analyse">
+        <input type="button" name="tree" value="Build tree">
+        <input type="button" name="wordnet" value="Look up on wordnet">
         <p>
     }
 }
+<script>
+    $(function(){
+        $("input[type='button']").click(function(){
+            var form = $("#helloform");
+            form.attr('action',$(this).attr('name'));
+            form.submit();
+    });
+    });
+</script>
 
