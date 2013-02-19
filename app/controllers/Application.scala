@@ -18,8 +18,6 @@ object Application extends Controller {
   val parser = ParserFactory.create(model);
 
   JWNL.initialize(application.resourceAsStream("file_properties.xml"))
-  val dict = Dictionary.getInstance()
-  val categorizer = new Categorizer()
 
   val helloForm = Form(
       "text" -> nonEmptyText
@@ -34,7 +32,7 @@ object Application extends Controller {
   def sentiment = Action { implicit request =>
     helloForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.index(formWithErrors)),
-      {case text => Ok("categorizer.getBestCategory(categorizer.categorize(text))")}
+      {case text => Ok(Categorizer.categorize(text))}
     )
   }
 
@@ -51,7 +49,7 @@ object Application extends Controller {
 
 
   def wordnet = Action { implicit request =>
-    helloForm.bindFromRequest.fold(
+    /*helloForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.index(formWithErrors)),
       {
         case text =>{
@@ -62,10 +60,9 @@ object Application extends Controller {
           for(word <- sense.getWords){
             res += ", " + word.getLemma
           }
-        }
-        Ok(res)
-      }}
-    )
+        }*/
+        Ok("res")
+
   }
 
      //val outcomes = categorizer.categorize(text)

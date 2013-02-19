@@ -20,13 +20,15 @@ class Categorizer$Test extends Specification {
   val classLoader = getClass.getClassLoader
   "Categorizer" should {
 
-   /*  "categorize a sentence" in{
+/*
+     "categorize a sentence" in{
     val categorizer = new Categorizer()
-       println(categorizer.categorize("Do not recommend you eat anything here except for ice cream.  Super melt was absolutely disgusting.  Couldn't even eat it."))
-     }*/
+       println(categorizer.categorize("bussing staff is rude."))
+     }
+*/
     "categorize all yelp reviews " in {
 
-       val categorizer = new Categorizer()
+       val categorizer = Categorizer
        val matrix = confustionMatrix
 
        var cnt=0
@@ -64,7 +66,7 @@ class Categorizer$Test extends Specification {
                     throw new Exception("This shouldnt happen")
                   }
                 }
-              }*/
+              }
               println("%4s |%7s |%7s |%7s".format("", "P", "U", "N"))
               println("-" * 35)
               for((key,map)<-matrix){
@@ -108,6 +110,7 @@ class Categorizer$Test extends Specification {
                }
              }
            }*/
+*/
   }
 
 
