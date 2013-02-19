@@ -9,6 +9,7 @@ import nlp.Categorizer
 import net.didion.jwnl.JWNL
 import net.didion.jwnl.dictionary.Dictionary
 import net.didion.jwnl.data.POS
+import java.util.Hashtable
 
 
 object Application extends Controller {
@@ -18,19 +19,22 @@ object Application extends Controller {
 
   JWNL.initialize(application.resourceAsStream("file_properties.xml"))
   val dict = Dictionary.getInstance()
+  val categorizer = new Categorizer()
 
   val helloForm = Form(
       "text" -> nonEmptyText
   )
 
   def index = Action {
+    new Hashtable
+
     Ok(views.html.index(helloForm))
   }
 
   def sentiment = Action { implicit request =>
     helloForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.index(formWithErrors)),
-      {case text => Ok(analyse(text))}
+      {case text => Ok("categorizer.getBestCategory(categorizer.categorize(text))")}
     )
   }
 
@@ -64,14 +68,7 @@ object Application extends Controller {
     )
   }
 
-  val categorizer = new Categorizer()
-  def analyse(text:String):String={
-
-    val outcomes = categorizer.categorize(text)
-    categorizer.getBestCategory(outcomes)
-
-  }
-    //val outcomes = categorizer.categorize(text)
+     //val outcomes = categorizer.categorize(text)
     //categorizer.getBestCategory(outcomes)
     //test(text)
   //}

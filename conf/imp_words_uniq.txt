@@ -5108,7 +5108,6 @@
 0.222	0.778	mediocre
 0.0	0.75	naughty
 0.0	0.5	no-good
-0.0	0.75	no
 0.0	0.875	swingeing
 0.0	0.875	uncool
 0.625	0.0	saintly
@@ -31545,9 +31544,6 @@
 0.0	0.5	naughtily
 0.0	0.5	mischievously
 0.0	0.625	rather
-0.0	0.75	dont
-0.0	0.75	cant
-0.0	0.75	wont
 0.5	0.375	quite_an
 0.5	0.375	quite_a
 0.125	0.0	conjecturally
@@ -31567,8 +31563,6 @@
 0.5	0.25	unconventionally
 0.5	0.0	pathogenically
 0.375	0.0	pictorially
-0.0	0.625	not
-0.0	0.625	non
 0.0	0.25	damn
 0.0	0.25	all-fired
 0.375	0.0	everywhere
@@ -37382,3 +37376,5 @@
 0.125	0.0	brighten
 0.0	0.125	fog_up
 0.125	0.0	deflagrate
+.5 0 eat
+.5 0 try

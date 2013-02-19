@@ -6,7 +6,7 @@ import com.github.play2war.plugin._
 
 object ApplicationBuild extends Build {
 
-  val appName         = "foo"
+  val appName         = "play_aws"
   val appVersion      = "1.0"
 
   val appDependencies = Seq(
