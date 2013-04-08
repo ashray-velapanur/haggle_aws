@@ -1,0 +1,35 @@
+@(helloForm: Form[(String)])
+
+@import helper._
+
+@main(title = "Sentiment Analysis") {
+
+    <h1>Sentiment Analysis</h1>
+
+
+    @form(action = routes.Application.sentiment, args = 'id -> "helloform") {
+
+        @textarea(
+        field = helloForm("text"),
+        args = '_label -> "Enter text for analyis: ",
+        'placeholder -> "Enter the foursquare tip",
+        'style -> "height:100px;width:400px"
+        )
+
+        <p class="buttons">
+        <input type="button" name="sentiment" value="Analyse">
+        <input type="button" name="tree" value="Build tree">
+        <input type="button" name="wordnet" value="Look up on wordnet">
+        <p>
+    }
+}
+<script>
+    $(function(){
+        $("input[type='button']").click(function(){
+            var form = $("#helloform");
+            form.attr('action',$(this).attr('name'));
+            form.submit();
+    });
+    });
+</script>
+
